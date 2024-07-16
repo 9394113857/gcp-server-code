@@ -1,0 +1,14 @@
+# Set the FLASK_APP environment variable to point to your Flask application
+set FLASK_APP=main.py
+
+# Initialize the database migration repository
+# This creates a 'migrations' directory to keep track of migration scripts
+flask --app main.py db init
+
+# Generate an initial migration script
+# This scans the models and creates a migration script to apply the initial database schema
+flask --app main.py db migrate -m "Initial migration."
+
+# Apply the migration to the database
+# This executes the migration script and updates the database schema
+flask --app main.py db upgrade
