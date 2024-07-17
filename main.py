@@ -84,7 +84,7 @@ def test():
     except Exception as e:
         logger.error(f'Error updating repository: {e}')
     
-    return jsonify({"message": "Hello, World! ---> from git triggered automatically."})
+    return jsonify({"message": "Hello, World! ---> from git triggered automatically."}) 
 
 @app.route('/register', methods=['POST'])
 def register():
