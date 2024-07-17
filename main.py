@@ -7,6 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt, unset_jwt_cookies
 from flask_cors import CORS
+import git  # type: ignore # GitPython library
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS
@@ -72,6 +73,17 @@ def check_if_token_revoked(jwt_header, jwt_payload):
 @app.route('/', methods=['GET'])
 def test():
     logger.info('Test route accessed')
+    
+    # GitHub webhook update
+    try:
+        repo = git.Repo('./orbe')
+        origin = repo.remotes.origin
+        repo.create_head('raghu', origin.refs.raghu).set_tracking_branch(origin.refs.raghu).checkout()
+        origin.pull('raghu')
+        logger.info('Repository updated successfully')
+    except Exception as e:
+        logger.error(f'Error updating repository: {e}')
+    
     return jsonify({"message": "Hello, World!"})
 
 @app.route('/register', methods=['POST'])
